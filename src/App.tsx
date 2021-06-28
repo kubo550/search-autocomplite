@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { fetchUsers } from "./api";
+import { useQuery } from "./hooks/useQuery";
+import { Error, Loading, SearchAutocomplete } from "./components";
 
-function App() {
+const getUsersNames = (data: any[]) =>
+  data.map(({ id, name, username }) => ({ id, name, username }));
+
+const App = () => {
+  const { data, error, isLoading } = useQuery(fetchUsers);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <Error error={error} />;
+  }
+
+  const userNames = getUsersNames(data);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='app'>
+      <div className='search-container'>
+        <SearchAutocomplete data={userNames} />
+        <button className='submit-btn'>
+          <i className='fas fa-search'></i>
+        </button>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
