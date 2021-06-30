@@ -1,0 +1,17 @@
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.img {
+  width: 250px;
+}
+
+@media only screen and (min-width: 600px) {
+  .img {
+    width: 600px;
+  }
+}
