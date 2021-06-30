@@ -32,27 +32,3 @@ button:hover {
   display: flex;
   position: relative;
 }
-
-.submit-btn {
-  margin-left: 7px;
-  padding: 4px 8px;
-  font-size: larger;
-  transform: translateY(-100%);
-
-  outline: none;
-  border: 3px solid transparent;
-
-  border-radius: 50%;
-  background-color: transparent;
-  color: rgba(232, 196, 243, 0.45);
-
-  transition: 0.8s border;
-}
-
-.submit-btn:focus,
-.submit-btn:hover {
-  border: 3px solid #c15a9c;
-}
-.submit-btn:active {
-  transform: translateY(1.5px);
-}
