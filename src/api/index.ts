@@ -3,7 +3,7 @@ import { Dispatch, bindActionCreators } from "redux";
 import { actionCreators, Action } from "state";
 import { UserApi } from "types/UserApi";
 
-const endpoint = "1https://jsonplaceholder.typicode.com/users";
+const endpoint = "https://jsonplaceholder.typicode.com/users";
 
 export const fetchUsers = (dispatch: Dispatch<Action>) => {
 
