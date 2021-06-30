@@ -1,3 +1,3 @@
 export * as actionCreators from "./user/userActions";
-export * from "./store";
+export * from "state";
 export * from "./rootReducer"
