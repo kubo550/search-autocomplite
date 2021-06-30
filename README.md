@@ -36,6 +36,6 @@
 
 ## About
 
-Author: Jakub Kurdziel [Github](https://github.com/kubo550)
-Email: qwercy142@gmail.com
+Author: Jakub Kurdziel [Github](https://github.com/kubo550)  
+Email: qwercy142@gmail.com  
 Facebook: [Jakub Kurdziel](https://www.facebook.com/powerty2/)
