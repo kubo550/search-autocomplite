@@ -27,14 +27,12 @@
 * Redux 
 
 
-## Available Scripts
+## Preview
 
-In the project directory, you can run:
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## About
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Author: Jakub Kurdziel [Github](https://github.com/kubo550)
+Email: qwercy142@gmail.com
+Facebook: [Jakub Kurdziel](https://www.facebook.com/powerty2/)
