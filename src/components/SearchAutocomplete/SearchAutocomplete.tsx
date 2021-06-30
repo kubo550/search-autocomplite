@@ -1,41 +1,13 @@
 // prettier-ignore
-import React, { forwardRef, useCallback, useRef, memo, useState, useEffect, LegacyRef, FC} from "react";
-import styles from "./SearchAutocomplete.module.css";
+import React, {  useCallback, useRef, useState, useEffect, FC} from "react";
+import styles from "./SearchAutocomplete.module.scss";
+import { containsNotAllowedChars, scrollTo } from "utils";
+import { Button, Input, AutocompleteList } from "components";
+import { User } from "types/UserApi";
 
 interface SearchProps {
-  data: {
-    id: any;
-    name: any;
-    username: any;
-  }[];
+  data: User[];
 }
-
-const containsNotAllowedChars = (text: string) => {
-  const letters = [...text];
-  const invalidChars = ["\\", "[", "]", "*"];
-  return letters.some(letter => invalidChars.includes(letter));
-};
-
-const scrollTo = (list: React.RefObject<HTMLDivElement>, idx: number) => {
-  if (!list.current) {
-    return;
-  }
-  const currEl = list.current.childNodes[idx] as HTMLElement;
-  list.current.scrollTo(0, currEl.offsetTop);
-};
-
-const getHighlightedHTML = (wholeText: string, searchingText: string) => {
-  const toInnerHTML = (text: string) => ({ __html: text });
-
-  if (!searchingText) {
-    return toInnerHTML(wholeText);
-  }
-
-  const regex = new RegExp(searchingText, "i");
-  const hightlighted = wholeText.replace(regex, e => `<b>${e}</b>`);
-
-  return toInnerHTML(hightlighted);
-};
 
 const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
   const [searchingText, setSearchingText] = useState("");
@@ -61,7 +33,6 @@ const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
       if (!len) {
         return;
       }
-
       switch (e.key) {
         case "ArrowUp":
           if (!curIdx) {
@@ -101,7 +72,7 @@ const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
   useEffect(() => {
     if (!isPopupOpen) {
       setCurIdx(null);
-    } else if (isPopupOpen) {
+    } else {
       document.addEventListener("keydown", handleKeydown);
     }
 
@@ -113,17 +84,13 @@ const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
 
     if (containsNotAllowedChars(text)) {
       return;
-    }
-
-    if (text !== "/") {
+    } else if (text !== "/") {
       setSearchingText(text);
     }
 
     setCurIdx(null);
     setisPopupOpen(true);
   };
-
-  const togglePopup = (isOpen: boolean) => setisPopupOpen(isOpen);
 
   const handleInputBlur = () =>
     curIdx !== null && setSearchingText(currentUsersList[curIdx][key]);
@@ -140,7 +107,7 @@ const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
       <Input
         searchingText={searchingText}
         onChange={handleInputChange}
-        togglePopup={togglePopup}
+        togglePopup={(isOpen: boolean) => setisPopupOpen(isOpen)}
         onBlur={handleInputBlur}
         resetInput={() => setSearchingText("")}
       />
@@ -161,125 +128,3 @@ const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
 };
 
 export default SearchAutocomplete;
-
-interface ButtonProps {
-  onClick: () => void;
-}
-
-export const Button: FC<ButtonProps> = memo(({ children, onClick }) => (
-  <button
-    className={styles.button}
-    onClick={onClick}
-    title='Toggle searching value'
-    aria-label='Toggle searching value'
-  >
-    {children}
-  </button>
-));
-
-interface InputProps {
-  searchingText: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  togglePopup: (isOpen: boolean) => void;
-  onBlur: () => void;
-  resetInput: () => void;
-}
-
-export const Input: FC<InputProps> = ({
-  searchingText,
-  onChange,
-  togglePopup,
-  onBlur,
-  resetInput,
-}) => {
-  const [hasFocus, sethasFocus] = useState(false);
-  const input = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "/") {
-        input.current?.focus();
-        input.current?.click();
-        resetInput();
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [resetInput]);
-
-  const handleFocus = useCallback(() => {
-    togglePopup(true);
-    sethasFocus(true);
-  }, [togglePopup]);
-
-  const handleBlur = useCallback(() => {
-    onBlur();
-    togglePopup(false);
-    sethasFocus(false);
-  }, [onBlur, togglePopup]);
-
-  return (
-    <input
-      type='search'
-      placeholder={hasFocus ? "Search For Users" : 'Press "/" to focus'}
-      aria-label='Search'
-      className={styles.search_input}
-      ref={input}
-      value={searchingText}
-      onChange={onChange}
-      onFocus={handleFocus}
-      onClick={handleFocus}
-      onBlur={handleBlur}
-    />
-  );
-};
-
-interface AutocompleteListProps {
-  searchingText: string;
-  mouseLeave: () => void;
-  list: { id: string | number; name: string; username: string }[];
-  curIdx: number | null;
-  mouseEnter: (idx: number) => void;
-  dataKey: "username" | "name";
-  ref: any;
-}
-
-export const AutocompleteList: FC<AutocompleteListProps> = forwardRef(
-  (
-    { list, curIdx, mouseEnter, dataKey, searchingText, mouseLeave },
-    ref: LegacyRef<HTMLDivElement> | undefined
-  ) => (
-    <div
-      ref={ref}
-      className={styles.search_list}
-      style={{ overflowY: list.length > 3 ? "scroll" : "auto" }}
-      onMouseLeave={mouseLeave}
-    >
-      {list.map((data, idx) => {
-        const isCurrent = idx === curIdx;
-        const backgroundColor = isCurrent ? "#cc98c7" : "#BC7DB6";
-        const color = isCurrent ? "#000" : "#424242";
-
-        return (
-          <div
-            key={data.id}
-            style={{ backgroundColor, color }}
-            className={styles.list_element}
-            onMouseEnter={() => mouseEnter(idx)}
-          >
-            <div
-              dangerouslySetInnerHTML={getHighlightedHTML(
-                data[dataKey],
-                searchingText
-              )}
-            />
-          </div>
-        );
-      })}
-      {list.length === 0 && (
-        <div className={styles.no_result}> No Results </div>
-      )}
-    </div>
-  )
-);
