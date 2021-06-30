@@ -25,6 +25,7 @@
 * Accessibility (Controlling website with keyboard, aria, titles)
 * Axios fetching data
 * Redux 
+* Font Awesome icons
 
 
 ## Preview
