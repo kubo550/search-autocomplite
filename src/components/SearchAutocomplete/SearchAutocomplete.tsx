@@ -119,6 +119,7 @@ const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
       setSearchingText(text);
     }
 
+    setCurIdx(null);
     setisPopupOpen(true);
   };
 
