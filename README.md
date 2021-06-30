@@ -4,7 +4,7 @@
 
 1. Get Focus on search input (by click or press '/' button)
 2. Start typing
-3. Control popup by **ArrowUp** & **ArrowDown** keys or **Mouse**
+3. Control popup by **ArrowUp**, **ArrowDown** & **Enter** keys or **Mouse**
 
 
 ## Tech Stack
@@ -29,7 +29,7 @@
 
 ## Preview
 
-
+![preview gif](https://raw.githubusercontent.com/kubo550/search-autocomplite/master/preview/autocomplete-preview.gif)
 
 ## About
 
