@@ -18,14 +18,16 @@
 
 ## Features
 
+* Redux 
 * Responsive (Media Queries)
 * Mobile First Desing 
 * Optymalization (Pure Components, useCalback, memo)
 * Moduled CSS 
 * Accessibility (Controlling website with keyboard, aria, titles)
-* Axios fetching data
-* Redux 
-* Font Awesome icons
+* Axios Fetching Data
+* Font Awesome Icons
+* Absolute Imports
+* Forward Refs
 
 
 ## Preview
