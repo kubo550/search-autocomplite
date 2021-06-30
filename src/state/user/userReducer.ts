@@ -1,18 +1,18 @@
 import USERS from "./userTypes";
+import { UserApi } from "types/UserApi";
+import { Action } from "./actions_types";
 
 interface UserState {
     loading: boolean;
-    users: any[];
+    users: UserApi[];
     error: null | string
 }
 
 const initialState: UserState = {
     loading: true,
-    users: [] as any[],
+    users: [],
     error: null
 }
-
-export type Action = any
 
 const reducer = (state = initialState, action: Action) => {
     switch (action.type) {
