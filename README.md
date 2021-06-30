@@ -6,7 +6,6 @@
 2. Start typing
 3. Control popup by **ArrowUp**, **ArrowDown** & **Enter** keys or **Mouse**
 
-
 ## Tech Stack
 
 ![React](https://img.shields.io/badge/-React-05122A?style=flat&logo=react)&nbsp;
@@ -15,17 +14,18 @@
 ![Axios](https://img.shields.io/badge/-axios-05122A?style=flat&logo=axisos)&nbsp;
 ![CSS](https://img.shields.io/badge/-CSS-05122A?style=flat&logo=CSS3&logoColor=1572B6)&nbsp;
 
-
 ## Features
 
-* Responsive (Media Queries)
-* Mobile First Desing 
-* Optymalization (Pure Components, useCalback, memo)
-* Moduled CSS 
-* Accessibility (Controlling website with keyboard, aria, titles)
-* Axios fetching data
-* Redux 
-
+- Redux
+- Responsive (Media Queries)
+- Mobile First Desing
+- Optymalization (Pure Components, useCalback, memo)
+- Moduled CSS
+- Accessibility (Controlling website with keyboard, aria, titles)
+- Axios fetching Data
+- RegExp
+- Absolute Imports
+- Forward Refs
 
 ## Preview
 
