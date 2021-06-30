@@ -1,7 +1,6 @@
 // prettier-ignore
 import React, { forwardRef, useCallback, useRef, memo, useState, useEffect, LegacyRef, FC} from "react";
 import styles from "./SearchAutocomplete.module.css";
-// import SearchIcon from "../../assets/search.svg";
 
 interface SearchProps {
   data: {
@@ -11,13 +10,31 @@ interface SearchProps {
   }[];
 }
 
+const containsNotAllowedChars = (text: string) => {
+  const letters = [...text];
+  const invalidChars = ["\\", "[", "]", "*"];
+  return letters.some(letter => invalidChars.includes(letter));
+};
+
 const scrollTo = (list: React.RefObject<HTMLDivElement>, idx: number) => {
   if (!list.current) {
     return;
   }
-  const currEl = list.current.childNodes[idx];
-  // @ts-ignore
+  const currEl = list.current.childNodes[idx] as HTMLElement;
   list.current.scrollTo(0, currEl.offsetTop);
+};
+
+const getHighlightedHTML = (wholeText: string, searchingText: string) => {
+  const toInnerHTML = (text: string) => ({ __html: text });
+
+  if (!searchingText) {
+    return toInnerHTML(wholeText);
+  }
+
+  const regex = new RegExp(searchingText, "i");
+  const hightlighted = wholeText.replace(regex, e => `<b>${e}</b>`);
+
+  return toInnerHTML(hightlighted);
 };
 
 const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
@@ -65,10 +82,13 @@ const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
           }
           break;
         case "Enter":
-          curIdx !== null && setSearchingText(currentUsersList[curIdx][key]);
+          if (curIdx === null || curIdx >= len) {
+            return;
+          }
+          setSearchingText(currentUsersList[curIdx][key]);
           setisPopupOpen(false);
-          // @ts-ignore
-          document.activeElement.blur();
+
+          (document.activeElement as HTMLElement).blur();
           break;
         default:
           return;
@@ -89,11 +109,16 @@ const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
   }, [isPopupOpen, handleKeydown, curIdx, currentUsersList, key]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // TODO  validation
+    const text = e.target.value;
 
-    if (e.target.value !== "/") {
-      setSearchingText(e.target.value);
+    if (containsNotAllowedChars(text)) {
+      return;
     }
+
+    if (text !== "/") {
+      setSearchingText(text);
+    }
+
     setisPopupOpen(true);
   };
 
@@ -102,10 +127,14 @@ const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
   const handleInputBlur = () =>
     curIdx !== null && setSearchingText(currentUsersList[curIdx][key]);
 
+  const handleMouseLeave = () => {
+    setCurIdx(null);
+    scrollTo(userList, 0);
+  };
+
   return (
     <div className={styles.search_container}>
-      {/* todo */}
-      <Button onClick={toogleSearchingKey}></Button>
+      <Button onClick={toogleSearchingKey}>By {key}</Button>
 
       <Input
         searchingText={searchingText}
@@ -117,6 +146,8 @@ const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
 
       {isPopupOpen && (
         <AutocompleteList
+          searchingText={searchingText}
+          mouseLeave={handleMouseLeave}
           list={currentUsersList}
           ref={userList}
           curIdx={curIdx}
@@ -134,9 +165,14 @@ interface ButtonProps {
   onClick: () => void;
 }
 
-export const Button: FC<ButtonProps> = memo(({ onClick }) => (
-  <button className={styles.button} onClick={onClick}>
-    change
+export const Button: FC<ButtonProps> = memo(({ children, onClick }) => (
+  <button
+    className={styles.button}
+    onClick={onClick}
+    title='Toggle searching value'
+    aria-label='Toggle searching value'
+  >
+    {children}
   </button>
 ));
 
@@ -179,12 +215,13 @@ export const Input: FC<InputProps> = ({
   const handleBlur = useCallback(() => {
     onBlur();
     togglePopup(false);
+    sethasFocus(false);
   }, [onBlur, togglePopup]);
 
   return (
     <input
       type='search'
-      placeholder={hasFocus ? "Search For Users" : "Press '/' To Focus"}
+      placeholder={hasFocus ? "Search For Users" : 'Press "/" to focus'}
       aria-label='Search'
       className={styles.search_input}
       ref={input}
@@ -198,7 +235,9 @@ export const Input: FC<InputProps> = ({
 };
 
 interface AutocompleteListProps {
-  list: { id: any; name: any; username: any }[];
+  searchingText: string;
+  mouseLeave: () => void;
+  list: { id: string | number; name: string; username: string }[];
   curIdx: number | null;
   mouseEnter: (idx: number) => void;
   dataKey: "username" | "name";
@@ -207,21 +246,39 @@ interface AutocompleteListProps {
 
 export const AutocompleteList: FC<AutocompleteListProps> = forwardRef(
   (
-    { list, curIdx, mouseEnter, dataKey },
+    { list, curIdx, mouseEnter, dataKey, searchingText, mouseLeave },
     ref: LegacyRef<HTMLDivElement> | undefined
   ) => (
-    <div ref={ref} className={styles.search_list}>
-      {list.map((data, idx) => (
-        <div
-          key={data.id}
-          style={{ backgroundColor: idx === curIdx ? "pink" : "red" }}
-          className={styles.list_element}
-          onMouseEnter={() => mouseEnter(idx)}
-        >
-          {data[dataKey]}
-        </div>
-      ))}
-      {list.length === 0 && <div> Brak wyników </div>}
+    <div
+      ref={ref}
+      className={styles.search_list}
+      style={{ overflowY: list.length > 3 ? "scroll" : "auto" }}
+      onMouseLeave={mouseLeave}
+    >
+      {list.map((data, idx) => {
+        const isCurrent = idx === curIdx;
+        const backgroundColor = isCurrent ? "#cc98c7" : "#BC7DB6";
+        const color = isCurrent ? "#000" : "#424242";
+
+        return (
+          <div
+            key={data.id}
+            style={{ backgroundColor, color }}
+            className={styles.list_element}
+            onMouseEnter={() => mouseEnter(idx)}
+          >
+            <div
+              dangerouslySetInnerHTML={getHighlightedHTML(
+                data[dataKey],
+                searchingText
+              )}
+            />
+          </div>
+        );
+      })}
+      {list.length === 0 && (
+        <div className={styles.no_result}> No Results </div>
+      )}
     </div>
   )
 );
