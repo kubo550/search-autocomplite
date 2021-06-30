@@ -16,7 +16,6 @@
 
 ## Features
 
-<<<<<<< HEAD
 - Redux
 - Responsive (Media Queries)
 - Mobile First Desing
@@ -27,21 +26,11 @@
 - RegExp
 - Absolute Imports
 - Forward Refs
-=======
-* Redux 
-* Responsive (Media Queries)
-* Mobile First Desing 
-* Optymalization (Pure Components, useCalback, memo)
-* Moduled CSS 
-* Accessibility (Controlling website with keyboard, aria, titles)
-* Axios Fetching Data
-* Font Awesome Icons
-* Absolute Imports
-* Forward Refs
-
->>>>>>> 6a265f2ab1edcc6c2698331fb306a4118669323d
+- Hosting on gh-pages 
 
 ## Preview
+
+Live Preview on gh-pages [search-autocomplite](https://kubo550.github.io/search-autocomplite)  
 
 ![preview gif](https://raw.githubusercontent.com/kubo550/search-autocomplite/master/preview/autocomplete-preview.gif)
 
