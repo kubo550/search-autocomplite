@@ -1,6 +1,6 @@
 import { FC } from "react";
-import styles from "./Error.module.css";
-import errorImg from "../../assets/error.svg";
+import styles from "./Error.module.scss";
+import errorImg from "assets/error.svg";
 
 interface ErrorProps {
   error: string;

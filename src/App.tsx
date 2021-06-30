@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import { actionCreators, State } from "./redux";
-import { Error, Loading, SearchAutocomplete } from "./components";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators, State } from "state";
+import { Error, Loading, SearchAutocomplete, SubmitBtn } from "components";
+import { User, UserApi } from "types/UserApi";
 
-const getUsersNames = (data: any[]) =>
+const getUsersNames = (data: UserApi[]): User[] =>
   data.map(({ id, name, username }) => ({ id, name, username }));
 
 const App = () => {
@@ -31,9 +32,7 @@ const App = () => {
     <div className='app'>
       <div className='search-container'>
         <SearchAutocomplete data={userNames} />
-        <button className='submit-btn' title='Search' aria-label='Search'>
-          <i className='fas fa-search'></i>
-        </button>
+        <SubmitBtn />
       </div>
     </div>
   );
