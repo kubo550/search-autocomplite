@@ -28,8 +28,4 @@ export interface UserApi {
     company: Company
 }
 
-export interface User {
-    id: number,
-    name: string,
-    username: string,
-}
+export type User = Pick<UserApi, "id" | "name" | "username">
