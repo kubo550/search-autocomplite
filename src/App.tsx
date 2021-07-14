@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { Dispatch } from "redux";
 import { useDispatch, useSelector } from "react-redux";
-import { Error, Loading, SearchAutocomplete, SubmitBtn } from "components";
+// prettier-ignore
+import { Error, Loading, SearchAutocomplete, SubmitBtn, UsersList} from "components";
 import { Action, State } from "state";
-import { User, UserApi } from "types/UserApi";
+import { UserName, User } from "types/UserApi";
 import { fetchUsers } from "api";
 
-const getUsersNames = (data: UserApi[]): User[] =>
+const getUsersNames = (data: User[]): UserName[] =>
   data.map(({ id, name, username }) => ({ id, name, username }));
 
 const App = () => {
@@ -33,6 +34,8 @@ const App = () => {
         <SearchAutocomplete data={userNames} />
         <SubmitBtn />
       </div>
+
+      <UsersList users={users} />
     </div>
   );
 };

@@ -2,7 +2,6 @@
   margin-left: 7px;
   padding: 4px 8px;
   font-size: larger;
-  transform: translateY(-100%);
   outline: none;
   border: 3px solid transparent;
   border-radius: 50%;
@@ -15,6 +14,6 @@
     border: 3px solid #c15a9c;
   }
   &:active {
-    transform: translateY(-97%);
+    transform: translateY(3%);
   }
 }

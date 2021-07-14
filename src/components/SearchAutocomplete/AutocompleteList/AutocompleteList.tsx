@@ -1,12 +1,12 @@
 import { FC, forwardRef, LegacyRef } from "react";
 import styles from "./AutocompleteList.module.scss";
 import { getHighlightedHTML } from "utils";
-import { User } from "types/UserApi";
+import { UserName } from "types/UserApi";
 
 interface AutocompleteListProps {
   searchingText: string;
   mouseLeave: () => void;
-  list: User[];
+  list: UserName[];
   curIdx: number | null;
   mouseEnter: (idx: number) => void;
   dataKey: "username" | "name";

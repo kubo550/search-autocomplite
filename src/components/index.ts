@@ -2,6 +2,7 @@ export { default as Loading } from "./Loading/Loading";
 export { default as Error } from "./Error/Error";
 export { default as SearchAutocomplete } from "./SearchAutocomplete/SearchAutocomplete";
 export { default as SubmitBtn } from "./SubmitSearchBtn/SubmitSearchBtn";
+export { default as UsersList } from "./UsersList/UsersList";
 
 // SearchAutocomplete Components
 export { default as Button } from "./SearchAutocomplete/Button/Button";

@@ -3,10 +3,10 @@ import React, {  useCallback, useRef, useState, useEffect, FC} from "react";
 import styles from "./SearchAutocomplete.module.scss";
 import { containsNotAllowedChars, scrollTo } from "utils";
 import { Button, Input, AutocompleteList } from "components";
-import { User } from "types/UserApi";
+import { UserName } from "types/UserApi";
 
 interface SearchProps {
-  data: User[];
+  data: UserName[];
 }
 
 const SearchAutocomplete: FC<SearchProps> = ({ data }) => {
