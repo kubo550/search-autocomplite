@@ -34,6 +34,13 @@ Live Preview on gh-pages [search-autocomplite](https://kubo550.github.io/search-
 
 ![preview gif](https://raw.githubusercontent.com/kubo550/search-autocomplite/master/preview/autocomplete-preview.gif)
 
+## License
+
+Licensed under the MIT License.
+
+See [LICENSE](https://github.com/kubo550/search-autocomplite/blob/master/LICENSE) for more information.
+
+
 ## About
 
 Author: Jakub Kurdziel [Github](https://github.com/kubo550)  
